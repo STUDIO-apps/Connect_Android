@@ -1,4 +1,4 @@
-package uk.co.appsbystudio.connect.dashboard
+package uk.co.appsbystudio.connect.ui.dashboard
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.server_list_item.view.*
 import uk.co.appsbystudio.connect.R
-import uk.co.appsbystudio.connect.models.ServerModel
+import uk.co.appsbystudio.connect.data.models.ServerModel
 
 class SavedServerAdapter(private var serverModelList: List<ServerModel>) : RecyclerView.Adapter<SavedServerAdapter.ViewHolder>() {
 

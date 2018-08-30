@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import uk.co.appsbystudio.connect.dashboard.DashboardFragment
-import uk.co.appsbystudio.connect.server.ClientThread
+import uk.co.appsbystudio.connect.ui.dashboard.DashboardFragment
+import uk.co.appsbystudio.connect.utils.ClientThread
 import uk.co.appsbystudio.connect.ui.server.ServerFragment
 
 class MainActivity : AppCompatActivity() {
@@ -17,9 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().replace(R.id.container, DashboardFragment(), "maps_fragment").commit()
-        }
+        supportFragmentManager.beginTransaction().replace(R.id.container, DashboardFragment()).commit()
 
         bottom_navigation_main.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -31,7 +29,9 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.container, ServerFragment()).addToBackStack(null).commit()
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.settings -> return@OnNavigationItemSelectedListener true
+                R.id.settings -> {
+                    return@OnNavigationItemSelectedListener true
+                }
             }
             false
         })

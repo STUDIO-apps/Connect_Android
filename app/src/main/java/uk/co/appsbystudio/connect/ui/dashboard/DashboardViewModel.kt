@@ -1,11 +1,11 @@
-package uk.co.appsbystudio.connect.dashboard
+package uk.co.appsbystudio.connect.ui.dashboard
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import uk.co.appsbystudio.connect.AppDatabase
-import uk.co.appsbystudio.connect.models.ServerModel
+import uk.co.appsbystudio.connect.data.AppDatabase
+import uk.co.appsbystudio.connect.data.models.ServerModel
 
 class DashboardViewModel(application: Application) : AndroidViewModel(application) {
 

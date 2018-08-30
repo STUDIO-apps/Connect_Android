@@ -1,4 +1,4 @@
-package uk.co.appsbystudio.connect.server;
+package uk.co.appsbystudio.connect.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;

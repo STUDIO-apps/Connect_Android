@@ -1,4 +1,4 @@
-package uk.co.appsbystudio.connect.dashboard
+package uk.co.appsbystudio.connect.ui.dashboard
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 import uk.co.appsbystudio.connect.R
-import uk.co.appsbystudio.connect.models.ServerModel
+import uk.co.appsbystudio.connect.data.models.ServerModel
 
 class DashboardFragment : Fragment() {
 
@@ -20,8 +20,6 @@ class DashboardFragment : Fragment() {
     private var serverAdapter: SavedServerAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
-
         viewModel = ViewModelProviders.of(this).get(DashboardViewModel::class.java)
 
         serverAdapter = SavedServerAdapter(ArrayList())
@@ -30,7 +28,7 @@ class DashboardFragment : Fragment() {
             serverAdapter?.addItem(it)
         })
 
-        return view
+        return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

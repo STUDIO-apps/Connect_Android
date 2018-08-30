@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_server.*
 
 import uk.co.appsbystudio.connect.R
-import uk.co.appsbystudio.connect.models.ServerModel
+import uk.co.appsbystudio.connect.data.models.ServerModel
 
 class ServerFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package uk.co.appsbystudio.connect.models
+package uk.co.appsbystudio.connect.data.models
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity

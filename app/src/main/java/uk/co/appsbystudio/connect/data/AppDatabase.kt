@@ -1,10 +1,10 @@
-package uk.co.appsbystudio.connect
+package uk.co.appsbystudio.connect.data
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
-import uk.co.appsbystudio.connect.models.ServerModel
+import uk.co.appsbystudio.connect.data.models.ServerModel
 
 @Database(entities = [ServerModel::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
@@ -17,7 +17,8 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): AppDatabase {
             return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context).also { instance = it }
+                instance
+                        ?: buildDatabase(context).also { instance = it }
             }
         }
 
