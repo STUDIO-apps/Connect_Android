@@ -11,5 +11,6 @@ data class ServerModel(
         @ColumnInfo(name = "server_address") val address: String,
         @ColumnInfo(name = "server_port") val port: Int,
         @ColumnInfo(name = "server_selected") val selected: Boolean,
-        @ColumnInfo(name = "server_favourite") val favourite: Boolean
+        @ColumnInfo(name = "server_favourite") val favourite: Boolean,
+        @ColumnInfo(name = "server_date") val timestamp: Long = System.currentTimeMillis()
 )

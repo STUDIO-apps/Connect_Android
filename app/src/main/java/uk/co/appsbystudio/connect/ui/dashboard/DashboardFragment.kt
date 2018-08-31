@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_dashboard.*
 import uk.co.appsbystudio.connect.R
 import uk.co.appsbystudio.connect.data.models.ServerModel
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : Fragment(), SavedServerAdapter.Callback {
 
     private lateinit var viewModel: DashboardViewModel
 
@@ -22,7 +22,7 @@ class DashboardFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel = ViewModelProviders.of(this).get(DashboardViewModel::class.java)
 
-        serverAdapter = SavedServerAdapter(ArrayList())
+        serverAdapter = SavedServerAdapter(ArrayList(), this)
 
         viewModel.getFavouriteServers().observe(this, Observer<List<ServerModel>>() {
             serverAdapter?.addItem(it)
@@ -39,6 +39,10 @@ class DashboardFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = serverAdapter
         }
+    }
+
+    override fun setSelected(uid: Int) {
+        viewModel.setSelected(uid)
     }
 
 }

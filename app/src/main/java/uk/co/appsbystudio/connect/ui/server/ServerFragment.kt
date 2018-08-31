@@ -17,7 +17,7 @@ import uk.co.appsbystudio.connect.R
 import uk.co.appsbystudio.connect.data.models.ServerModel
 import uk.co.appsbystudio.connect.ui.server.add.AddServerActivity
 
-class ServerFragment : Fragment() {
+class ServerFragment : Fragment(), ServerAdapter.Callback {
 
     private lateinit var viewModel: ServerViewModel
     private var serverAdapter: ServerAdapter? = null
@@ -26,7 +26,7 @@ class ServerFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         viewModel = ViewModelProviders.of(this).get(ServerViewModel::class.java)
 
-        serverAdapter = ServerAdapter(ArrayList())
+        serverAdapter = ServerAdapter(ArrayList(), this)
 
         viewModel.getServers().observe(this, Observer<List<ServerModel>>() {
             serverAdapter?.addItem(it)
@@ -47,5 +47,9 @@ class ServerFragment : Fragment() {
         fab_add_server.setOnClickListener {
             startActivity(Intent(context, AddServerActivity::class.java))
         }
+    }
+
+    override fun setSelected(uid: Int) {
+        viewModel.setSelected(uid)
     }
 }

@@ -4,21 +4,33 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RadioButton
+import android.widget.TextView
 import kotlinx.android.synthetic.main.server_list_item.view.*
 import uk.co.appsbystudio.connect.R
 import uk.co.appsbystudio.connect.data.models.ServerModel
 
-class ServerAdapter(private var serverModelList: List<ServerModel>) : RecyclerView.Adapter<ServerAdapter.ViewHolder>() {
+class ServerAdapter(private var serverModelList: List<ServerModel>, private var callback: Callback) : RecyclerView.Adapter<ServerAdapter.ViewHolder>() {
+
+    interface Callback {
+        fun setSelected(uid: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.server_list_item, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val serverModel = serverModelList.get(position)
+        val serverModel = serverModelList[holder.adapterPosition]
+
         holder.apply {
             name.text = serverModel.name
             address.text = "${serverModel.address}:${serverModel.port}"
-            selected.isSelected = serverModel.selected
+            selected.isChecked = serverModel.selected
+
+            selected.setOnClickListener {
+                callback.setSelected(serverModel.uid!!)
+            }
         }
     }
 
@@ -30,9 +42,9 @@ class ServerAdapter(private var serverModelList: List<ServerModel>) : RecyclerVi
     override fun getItemCount() = serverModelList.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val connectionStatus = itemView.image_connection_status_item
-        val name = itemView.text_server_name_item
-        val address = itemView.text_server_address_item
-        val selected = itemView.radio_selected_item
+        val connectionStatus: ImageView = itemView.image_connection_status_item
+        val name: TextView = itemView.text_server_name_item
+        val address: TextView = itemView.text_server_address_item
+        val selected: RadioButton = itemView.radio_selected_item
     }
 }

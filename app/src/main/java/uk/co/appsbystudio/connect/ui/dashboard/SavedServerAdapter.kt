@@ -8,7 +8,11 @@ import kotlinx.android.synthetic.main.server_list_item.view.*
 import uk.co.appsbystudio.connect.R
 import uk.co.appsbystudio.connect.data.models.ServerModel
 
-class SavedServerAdapter(private var serverModelList: List<ServerModel>) : RecyclerView.Adapter<SavedServerAdapter.ViewHolder>() {
+class SavedServerAdapter(private var serverModelList: List<ServerModel>, private var callback: Callback) : RecyclerView.Adapter<SavedServerAdapter.ViewHolder>() {
+
+    interface Callback {
+        fun setSelected(uid: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.server_list_item, parent, false))
@@ -18,7 +22,11 @@ class SavedServerAdapter(private var serverModelList: List<ServerModel>) : Recyc
         holder.apply {
             name.text = serverModel.name
             address.text = "${serverModel.address}:${serverModel.port}"
-            selected.isSelected = serverModel.selected
+            selected.isChecked = serverModel.selected
+
+            selected.setOnClickListener {
+                callback.setSelected(serverModel.uid!!)
+            }
         }
     }
 

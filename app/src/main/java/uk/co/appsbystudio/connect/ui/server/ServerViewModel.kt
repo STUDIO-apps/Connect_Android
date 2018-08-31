@@ -23,4 +23,11 @@ class ServerViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun setSelected(uid: Int) {
+        launch {
+            appDatabase.serverDao().deselectAll()
+            appDatabase.serverDao().setSelected(uid, true)
+        }
+    }
+
 }

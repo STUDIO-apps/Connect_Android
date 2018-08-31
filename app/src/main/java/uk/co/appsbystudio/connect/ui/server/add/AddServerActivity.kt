@@ -29,7 +29,7 @@ class AddServerActivity : AppCompatActivity() {
                     address = entry_address_server.text.toString(),
                     port = entry_port_server.text.toString().toInt(),
                     selected = false,
-                    favourite = true)
+                    favourite = false)
 
             viewModel.addServer(serverModel)
 
