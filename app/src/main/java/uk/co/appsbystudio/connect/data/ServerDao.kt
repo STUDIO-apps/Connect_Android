@@ -11,6 +11,12 @@ interface ServerDao {
     @Query("SELECT * FROM servers ORDER BY server_date DESC")
     fun getAll(): LiveData<List<ServerModel>>
 
+    @Query("SELECT * FROM servers WHERE server_selected = 1")
+    fun observerSelected(): LiveData<ServerModel>
+
+    @Query("SELECT * FROM servers WHERE server_selected = 1")
+    fun getSelected(): ServerModel
+
     @Query("SELECT * FROM servers WHERE server_favourite = 1 ORDER BY server_date DESC LIMIT :limit")
     fun getFavourites(limit: Int): LiveData<List<ServerModel>>
 

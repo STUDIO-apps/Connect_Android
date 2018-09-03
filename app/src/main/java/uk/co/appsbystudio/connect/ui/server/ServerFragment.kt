@@ -2,7 +2,6 @@ package uk.co.appsbystudio.connect.ui.server
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_server.*
-import uk.co.appsbystudio.connect.MainActivity
-import uk.co.appsbystudio.connect.MainView
 import uk.co.appsbystudio.connect.R
 import uk.co.appsbystudio.connect.data.models.ServerModel
 import uk.co.appsbystudio.connect.ui.server.add.AddServerActivity

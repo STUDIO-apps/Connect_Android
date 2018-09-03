@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
@@ -32,6 +33,13 @@ class ServerAdapter(private var serverModelList: List<ServerModel>, private var 
                 callback.setSelected(serverModel.uid!!)
             }
         }
+
+        holder.view.setOnLongClickListener {
+            holder.apply {
+                checkbox.isChecked = true
+            }
+            return@setOnLongClickListener true
+        }
     }
 
     fun addItem(serverModelList: List<ServerModel>?) {
@@ -42,9 +50,26 @@ class ServerAdapter(private var serverModelList: List<ServerModel>, private var 
     override fun getItemCount() = serverModelList.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val view = itemView
+
         val connectionStatus: ImageView = itemView.image_connection_status_item
         val name: TextView = itemView.text_server_name_item
         val address: TextView = itemView.text_server_address_item
         val selected: RadioButton = itemView.radio_selected_item
+
+        val checkbox: CheckBox = itemView.checkbox_selected_item
+        val star: ImageView = itemView.image_star_item
+
+        init {
+            view.setOnLongClickListener {
+                checkbox.visibility = View.VISIBLE
+                star.visibility = View.VISIBLE
+
+                connectionStatus.visibility = View.INVISIBLE
+                selected.visibility = View.INVISIBLE
+
+                return@setOnLongClickListener true
+            }
+        }
     }
 }

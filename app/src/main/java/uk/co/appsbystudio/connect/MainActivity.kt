@@ -1,23 +1,27 @@
 package uk.co.appsbystudio.connect
 
+import android.arch.lifecycle.Observer
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_server.*
+import uk.co.appsbystudio.connect.data.AppDatabase
+import uk.co.appsbystudio.connect.data.models.ServerModel
 import uk.co.appsbystudio.connect.ui.dashboard.DashboardFragment
-import uk.co.appsbystudio.connect.utils.ClientThread
 import uk.co.appsbystudio.connect.ui.server.ServerFragment
 import uk.co.appsbystudio.connect.ui.settings.SettingsFragment
+import uk.co.appsbystudio.connect.utils.OnSocketStateChangeListener
+import uk.co.appsbystudio.connect.utils.SocketService
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStateReceiverListener {
 
-    private lateinit var clientThread: ClientThread
-    private var thread: Thread? = null
+    private var onSocketStateChangeListener = OnSocketStateChangeListener()
 
     private var selectedItemId = R.id.dashboard
     private var selectedItem = R.id.dashboard
@@ -26,7 +30,19 @@ class MainActivity : AppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val appDatabase = AppDatabase.getInstance(this.application)
+
         setSupportActionBar(toolbar)
+
+        val service = Intent(this, SocketService::class.java)
+
+        startService(service)
+
+        appDatabase.serverDao().observerSelected().observe(this, Observer<ServerModel>() {
+            stopService(service)
+            startService(service)
+            println(it?.uid)
+        })
 
         supportFragmentManager.beginTransaction().replace(R.id.container, DashboardFragment()).commit()
 
@@ -59,6 +75,9 @@ class MainActivity : AppCompatActivity(), MainView {
             false
         })
 
+        registerReceiver(onSocketStateChangeListener, IntentFilter("socket.state"))
+        onSocketStateChangeListener.addListener(this)
+
         /*connectButton.setOnClickListener {
             if (thread == null || !thread!!.isAlive) {
                 clientThread = ClientThread(editTextAddress.text.toString(), Integer.valueOf(editTextPort.text.toString()))
@@ -76,48 +95,42 @@ class MainActivity : AppCompatActivity(), MainView {
         disconnectButton.setOnClickListener { clientThread.closeConnection() }*/
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        onSocketStateChangeListener.removeListener(this)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                bottom_navigation_main.selectedItemId = selectedItemId
-                bottom_navigation_main.startAnimation(AnimationUtils.loadAnimation(this, R.anim.enter_from_bottom))
-                bottom_navigation_main.visibility = View.VISIBLE
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                settingsBack()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
-        /*if (bottom_navigation_main.selectedItemId == R.id.settings) {
-            bottom_navigation_main.selectedItemId = selectedItemId
-            bottom_navigation_main.startAnimation(AnimationUtils.loadAnimation(this, R.anim.enter_from_bottom))
-            bottom_navigation_main.visibility = View.VISIBLE
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        } else {
-            super.onBackPressed()
-        }*/
-
         when (bottom_navigation_main.selectedItemId) {
             R.id.settings -> {
-                bottom_navigation_main.selectedItemId = selectedItemId
-                bottom_navigation_main.startAnimation(AnimationUtils.loadAnimation(this, R.anim.enter_from_bottom))
-                bottom_navigation_main.visibility = View.VISIBLE
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                settingsBack()
             }
             R.id.servers -> bottom_navigation_main.selectedItemId = R.id.dashboard
             else -> super.onBackPressed()
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (thread != null) {
-            clientThread.closeConnection()
-        }
+    private fun settingsBack() {
+        bottom_navigation_main.selectedItemId = selectedItemId
+        bottom_navigation_main.startAnimation(AnimationUtils.loadAnimation(this, R.anim.enter_from_bottom))
+        bottom_navigation_main.visibility = View.VISIBLE
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
-    override fun showFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().add(R.id.constraint_main, fragment).addToBackStack(null).commit()
+    override fun socketConnected() {
+        Toast.makeText(this, "Connected to server", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun socketDisconnected() {
+        Toast.makeText(this, "Disconnected from server", Toast.LENGTH_SHORT).show()
     }
 }
