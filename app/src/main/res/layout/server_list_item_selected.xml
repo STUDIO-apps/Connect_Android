@@ -5,16 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/image_connection_status_item"
+    <CheckBox
+        android:id="@+id/checkbox_selected_item_selected"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_signal_wifi_off_black_24dp"
-        android:tint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -23,30 +21,32 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/radio_selected_item"
-        app:layout_constraintStart_toEndOf="@+id/image_connection_status_item"
+        app:layout_constraintEnd_toStartOf="@+id/image_star_item_selected"
+        app:layout_constraintStart_toEndOf="@+id/checkbox_selected_item_selected"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/text_server_name_item"
+            android:id="@+id/text_server_name_item_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="@tools:sample/full_names" />
 
         <TextView
-            android:id="@+id/text_server_address_item"
+            android:id="@+id/text_server_address_item_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="@tools:sample/date/ddmmyy"/>
 
     </LinearLayout>
 
-    <RadioButton
-        android:id="@+id/radio_selected_item"
+    <ImageView
+        android:id="@+id/image_star_item_selected"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:src="@drawable/ic_star_border_black_24dp"
+        android:tint="@android:color/white"
         android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

@@ -21,6 +21,8 @@ import uk.co.appsbystudio.connect.utils.SocketService
 
 class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStateReceiverListener {
 
+    private var connected = false
+
     private var onSocketStateChangeListener = OnSocketStateChangeListener()
 
     private var selectedItemId = R.id.dashboard
@@ -53,12 +55,12 @@ class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStat
                 when (it.itemId) {
                     R.id.dashboard -> {
                         selectedItemId = it.itemId
-                        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, DashboardFragment()).commit()
+                        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, DashboardFragment.newInstance(connected)).commit()
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.servers -> {
                         selectedItemId = it.itemId
-                        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, ServerFragment()).commit()
+                        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, ServerFragment.newInstance(connected)).commit()
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.settings -> {
@@ -97,6 +99,7 @@ class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStat
 
     override fun onDestroy() {
         super.onDestroy()
+        unregisterReceiver(onSocketStateChangeListener)
         onSocketStateChangeListener.removeListener(this)
     }
 
@@ -127,10 +130,12 @@ class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStat
     }
 
     override fun socketConnected() {
+        connected = true
         Toast.makeText(this, "Connected to server", Toast.LENGTH_SHORT).show()
     }
 
     override fun socketDisconnected() {
+        connected = false
         Toast.makeText(this, "Disconnected from server", Toast.LENGTH_SHORT).show()
     }
 }

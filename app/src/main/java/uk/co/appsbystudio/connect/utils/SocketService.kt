@@ -8,7 +8,7 @@ import uk.co.appsbystudio.connect.data.AppDatabase
 
 class SocketService : Service() {
 
-    var clientThread: ClientThread? = null
+    private var clientThread: ClientThread? = null
     var thread: Thread? = null
 
     override fun onBind(intent: Intent): IBinder? {

@@ -2,6 +2,7 @@ package uk.co.appsbystudio.connect.ui.dashboard
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -12,21 +13,35 @@ import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 import uk.co.appsbystudio.connect.R
 import uk.co.appsbystudio.connect.data.models.ServerModel
+import uk.co.appsbystudio.connect.utils.OnSocketStateChangeListener
 
-class DashboardFragment : Fragment(), SavedServerAdapter.Callback {
+class DashboardFragment : Fragment(), SavedServerAdapter.Callback, OnSocketStateChangeListener.SocketStateReceiverListener {
+
+    private var onSocketStateChangeListener = OnSocketStateChangeListener()
+    private var connected: Boolean? = false
 
     private lateinit var viewModel: DashboardViewModel
-
     private var serverAdapter: SavedServerAdapter? = null
+
+    companion object {
+        fun newInstance(connected: Boolean) = DashboardFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean("connected", connected)
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel = ViewModelProviders.of(this).get(DashboardViewModel::class.java)
 
-        serverAdapter = SavedServerAdapter(ArrayList(), this)
+        serverAdapter = SavedServerAdapter(ArrayList(), connected, this)
 
         viewModel.getFavouriteServers().observe(this, Observer<List<ServerModel>>() {
             serverAdapter?.addItem(it)
         })
+
+        context?.registerReceiver(onSocketStateChangeListener, IntentFilter("socket.state"))
+        onSocketStateChangeListener.addListener(this)
 
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
@@ -41,8 +56,21 @@ class DashboardFragment : Fragment(), SavedServerAdapter.Callback {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        context?.unregisterReceiver(onSocketStateChangeListener)
+        onSocketStateChangeListener.removeListener(this)
+    }
+
     override fun setSelected(uid: Int) {
         viewModel.setSelected(uid)
     }
 
+    override fun socketConnected() {
+        serverAdapter?.setConnectionState(true)
+    }
+
+    override fun socketDisconnected() {
+        serverAdapter?.setConnectionState(false)
+    }
 }

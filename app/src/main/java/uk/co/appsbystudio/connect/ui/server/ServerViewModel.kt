@@ -30,4 +30,10 @@ class ServerViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun toggleFavourite(uid: Int, isFavourite: Boolean) {
+        launch {
+            appDatabase.serverDao().setFavourite(uid, isFavourite)
+        }
+    }
+
 }
