@@ -1,9 +1,8 @@
 package uk.co.appsbystudio.connect.ui.server.add
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_add_server.*
+import androidx.appcompat.app.AppCompatActivity
 
 import uk.co.appsbystudio.connect.R
 import uk.co.appsbystudio.connect.data.models.ServerModel

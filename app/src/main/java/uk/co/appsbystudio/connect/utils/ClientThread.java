@@ -29,7 +29,7 @@ public class ClientThread implements Runnable {
     private ArrayList<ContactsModel> contactsArray = new ArrayList<>();
 
     private Socket socket;
-    private DataOutputStream outputStream;
+    //private DataOutputStream outputStream;
     private ObjectOutputStream objectOutputStream;
 
     public ClientThread(Context context, String address, int port) {
@@ -47,14 +47,14 @@ public class ClientThread implements Runnable {
             byte[] buffer = new byte[1024];
             int byteRead;
             InputStream inputStream = socket.getInputStream();
-            outputStream = new DataOutputStream(socket.getOutputStream());
+            //outputStream = new DataOutputStream(socket.getOutputStream());
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
             while ((byteRead = inputStream.read(buffer)) != -1) {
                 byteArrayOutputStream.write(buffer, 0, byteRead);
                 String result = byteArrayOutputStream.toString("UTF-8");
 
-                sendMessage("Hello, Server!");
+                //sendMessage("Hello, Server!");
                 new ContactsSync().execute();
                 //new LastMessageSync().execute();
 
@@ -76,8 +76,8 @@ public class ClientThread implements Runnable {
     private void sendMessage(String message) {
         try {
             byte[] data = message.getBytes("UTF-8");
-            outputStream.writeInt(data.length);
-            outputStream.write(data);
+            //outputStream.writeInt(data.length);
+            //outputStream.write(data);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,7 +91,7 @@ public class ClientThread implements Runnable {
         try {
             if (socket != null) {
                 socket.close();
-                outputStream.close();
+                //outputStream.close();
                 objectOutputStream.close();
 
                 isConnected = false;

@@ -1,7 +1,7 @@
 package uk.co.appsbystudio.connect.ui.server
 
 import android.annotation.SuppressLint
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.server_list_item_selected.view.*
 import uk.co.appsbystudio.connect.R
 import uk.co.appsbystudio.connect.data.models.ServerModel
 
-class ServerAdapter(private var serverModelList: List<ServerModel>, connected: Boolean?, private var callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ServerAdapter(private var serverModelList: List<ServerModel>, connected: Boolean?, private var callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     private var isSelected = false
     private var itemSelected: Int? = null
@@ -30,13 +30,13 @@ class ServerAdapter(private var serverModelList: List<ServerModel>, connected: B
         if (connected != null) this.connected = connected
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         if (viewType == R.layout.server_list_item_selected) return ViewHolderSelected(LayoutInflater.from(parent.context).inflate(R.layout.server_list_item_selected, parent, false))
         return ViewHolderDefault(LayoutInflater.from(parent.context).inflate(R.layout.server_list_item, parent, false))
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val serverModel = serverModelList[holder.adapterPosition]
 
         when (holder.itemViewType) {
@@ -106,7 +106,7 @@ class ServerAdapter(private var serverModelList: List<ServerModel>, connected: B
         return if (!isSelected) R.layout.server_list_item else R.layout.server_list_item_selected
     }
 
-    class ViewHolderDefault(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolderDefault(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         val view = itemView
 
         val connectionStatus = itemView.image_connection_status_item
@@ -115,7 +115,7 @@ class ServerAdapter(private var serverModelList: List<ServerModel>, connected: B
         val selected: RadioButton = itemView.radio_selected_item
     }
 
-    class ViewHolderSelected(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolderSelected(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         val view = itemView
 
         val name: TextView = itemView.text_server_name_item_selected

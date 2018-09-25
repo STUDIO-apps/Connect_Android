@@ -1,8 +1,8 @@
 package uk.co.appsbystudio.connect.data
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
-import android.arch.persistence.room.OnConflictStrategy.REPLACE
+import androidx.lifecycle.LiveData
+import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
 import uk.co.appsbystudio.connect.data.models.ServerModel
 
 @Dao

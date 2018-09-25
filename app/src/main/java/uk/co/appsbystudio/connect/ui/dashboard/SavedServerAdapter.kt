@@ -1,7 +1,7 @@
 package uk.co.appsbystudio.connect.ui.dashboard
 
 import android.annotation.SuppressLint
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.server_list_item.view.*
 import uk.co.appsbystudio.connect.R
 import uk.co.appsbystudio.connect.data.models.ServerModel
 
-class SavedServerAdapter(private var serverModelList: List<ServerModel>, connected: Boolean?, private var callback: Callback) : RecyclerView.Adapter<SavedServerAdapter.ViewHolder>() {
+class SavedServerAdapter(private var serverModelList: List<ServerModel>, connected: Boolean?, private var callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<SavedServerAdapter.ViewHolder>() {
 
     private var connected: Boolean = false
 
@@ -52,7 +52,7 @@ class SavedServerAdapter(private var serverModelList: List<ServerModel>, connect
 
     override fun getItemCount() = serverModelList.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         val connectionStatus = itemView.image_connection_status_item
         val name = itemView.text_server_name_item
         val address = itemView.text_server_address_item

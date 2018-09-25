@@ -1,16 +1,15 @@
 package uk.co.appsbystudio.connect
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
 import uk.co.appsbystudio.connect.data.AppDatabase
 import uk.co.appsbystudio.connect.data.models.ServerModel
 import uk.co.appsbystudio.connect.ui.dashboard.DashboardFragment

@@ -1,21 +1,20 @@
 package uk.co.appsbystudio.connect.ui.dashboard
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 import uk.co.appsbystudio.connect.R
 import uk.co.appsbystudio.connect.data.models.ServerModel
 import uk.co.appsbystudio.connect.utils.OnSocketStateChangeListener
 
-class DashboardFragment : Fragment(), SavedServerAdapter.Callback, OnSocketStateChangeListener.SocketStateReceiverListener {
+class DashboardFragment : androidx.fragment.app.Fragment(), SavedServerAdapter.Callback, OnSocketStateChangeListener.SocketStateReceiverListener {
 
     private var onSocketStateChangeListener = OnSocketStateChangeListener()
     private var connected: Boolean? = false
@@ -51,7 +50,7 @@ class DashboardFragment : Fragment(), SavedServerAdapter.Callback, OnSocketState
 
         recycler_fave_dashboard.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
             adapter = serverAdapter
         }
     }
