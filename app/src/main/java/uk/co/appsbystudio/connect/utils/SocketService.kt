@@ -3,7 +3,7 @@ package uk.co.appsbystudio.connect.utils
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
 import uk.co.appsbystudio.connect.data.AppDatabase
 
 class SocketService : Service() {

@@ -10,6 +10,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.navigation.Navigation
+import androidx.navigation.ui.setupWithNavController
+import kotlinx.android.synthetic.main.activity_main.*
 import uk.co.appsbystudio.connect.data.AppDatabase
 import uk.co.appsbystudio.connect.data.models.ServerModel
 import uk.co.appsbystudio.connect.ui.dashboard.DashboardFragment
@@ -23,9 +26,6 @@ class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStat
     private var connected = false
 
     private var onSocketStateChangeListener = OnSocketStateChangeListener()
-
-    private var selectedItemId = R.id.dashboard
-    private var selectedItem = R.id.dashboard
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,36 +45,9 @@ class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStat
             println(it?.uid)
         })
 
-        supportFragmentManager.beginTransaction().replace(R.id.container, DashboardFragment()).commit()
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
-        bottom_navigation_main.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener {
-            toolbar.setTitle(R.string.app_name)
-            if (selectedItem != it.itemId) {
-                selectedItem = it.itemId
-                when (it.itemId) {
-                    R.id.dashboard -> {
-                        selectedItemId = it.itemId
-                        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, DashboardFragment.newInstance(connected)).commit()
-                        return@OnNavigationItemSelectedListener true
-                    }
-                    R.id.servers -> {
-                        selectedItemId = it.itemId
-                        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, ServerFragment.newInstance(connected)).commit()
-                        return@OnNavigationItemSelectedListener true
-                    }
-                    R.id.settings -> {
-                        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, SettingsFragment()).commit()
-                        bottom_navigation_main.startAnimation(AnimationUtils.loadAnimation(this, R.anim.exit_to_bottom))
-                        bottom_navigation_main.visibility = View.GONE
-
-                        toolbar.title = it.title
-                        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                        return@OnNavigationItemSelectedListener true
-                    }
-                }
-            }
-            false
-        })
+        bottom_navigation_main.setupWithNavController(navController)
 
         registerReceiver(onSocketStateChangeListener, IntentFilter("socket.state"))
         onSocketStateChangeListener.addListener(this)
@@ -100,32 +73,6 @@ class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStat
         super.onDestroy()
         unregisterReceiver(onSocketStateChangeListener)
         onSocketStateChangeListener.removeListener(this)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            android.R.id.home -> {
-                settingsBack()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onBackPressed() {
-        when (bottom_navigation_main.selectedItemId) {
-            R.id.settings -> {
-                settingsBack()
-            }
-            R.id.servers -> bottom_navigation_main.selectedItemId = R.id.dashboard
-            else -> super.onBackPressed()
-        }
-    }
-
-    private fun settingsBack() {
-        bottom_navigation_main.selectedItemId = selectedItemId
-        bottom_navigation_main.startAnimation(AnimationUtils.loadAnimation(this, R.anim.enter_from_bottom))
-        bottom_navigation_main.visibility = View.VISIBLE
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun socketConnected() {

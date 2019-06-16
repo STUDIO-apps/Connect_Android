@@ -2,21 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/dashboard"
+        android:id="@+id/dashboardFragment"
         android:enabled="true"
         android:title="Dashboard"
         android:icon="@drawable/ic_dashboard_black_24dp"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/servers"
+        android:id="@+id/serverFragment"
         android:enabled="true"
         android:title="Servers"
         android:icon="@drawable/ic_desktop_windows_black_24dp"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/settings"
+        android:id="@+id/settingsFragment"
         android:enabled="true"
         android:title="Settings"
         android:icon="@drawable/ic_settings_black_24dp"

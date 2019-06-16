@@ -29,9 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.server.add.AddServerActivity"
-            android:parentActivityName=".MainActivity" />
 
         <service
             android:name=".utils.SocketService"

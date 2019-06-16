@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
 import uk.co.appsbystudio.connect.data.AppDatabase
 import uk.co.appsbystudio.connect.data.models.ServerModel
 
