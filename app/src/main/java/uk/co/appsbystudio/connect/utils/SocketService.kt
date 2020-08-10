@@ -28,6 +28,7 @@ class SocketService : Service() {
             val server = appDatabase.serverDao().getSelected()
 
             if (server != null) openConnection(server.address, server.port)
+
         }
     }
 

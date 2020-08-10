@@ -20,12 +20,16 @@ import uk.co.appsbystudio.connect.ui.server.ServerFragment
 import uk.co.appsbystudio.connect.ui.settings.SettingsFragment
 import uk.co.appsbystudio.connect.utils.OnSocketStateChangeListener
 import uk.co.appsbystudio.connect.utils.SocketService
+import uk.co.appsbystudio.connect.utils.SocketUtils
 
 class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStateReceiverListener {
 
     private var connected = false
 
+    private var socketUtils: SocketUtils? = null
     private var onSocketStateChangeListener = OnSocketStateChangeListener()
+
+    lateinit var service: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +39,9 @@ class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStat
 
         setSupportActionBar(toolbar)
 
-        val service = Intent(this, SocketService::class.java)
+        socketUtils = SocketUtils()
+
+        service = Intent(this, SocketService::class.java)
 
         startService(service)
 
@@ -51,26 +57,13 @@ class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStat
 
         registerReceiver(onSocketStateChangeListener, IntentFilter("socket.state"))
         onSocketStateChangeListener.addListener(this)
-
-        /*connectButton.setOnClickListener {
-            if (thread == null || !thread!!.isAlive) {
-                clientThread = ClientThread(editTextAddress.text.toString(), Integer.valueOf(editTextPort.text.toString()))
-                thread = Thread(clientThread)
-                thread!!.start()
-            } else
-                println("Already connected!")
-        }
-
-        messageSend.setOnClickListener {
-            val thread = Thread(Runnable { clientThread.sendMessage("This should work!") })
-            thread.start()
-        }
-
-        disconnectButton.setOnClickListener { clientThread.closeConnection() }*/
     }
 
     override fun onDestroy() {
         super.onDestroy()
+
+        socketUtils?.closeSocket(this)
+
         unregisterReceiver(onSocketStateChangeListener)
         onSocketStateChangeListener.removeListener(this)
     }
@@ -78,6 +71,7 @@ class MainActivity : AppCompatActivity(), OnSocketStateChangeListener.SocketStat
     override fun socketConnected() {
         connected = true
         Toast.makeText(this, "Connected to server", Toast.LENGTH_SHORT).show()
+
     }
 
     override fun socketDisconnected() {
